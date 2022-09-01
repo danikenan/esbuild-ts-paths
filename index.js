@@ -13,7 +13,7 @@ module.exports = (relativeTsconfigPath = "./tsconfig.json") => {
   tsconfigData = stripJsonComments(tsconfigData);
   const { compilerOptions } = JSON.parse(tsconfigData);
 
-  const pathKeys = Object.keys(compilerOptions.paths | {});
+  const pathKeys = Object.keys(compilerOptions.paths || {});
   if(pathKeys.length === 0){
     console.warn('esbuild-ts-paths - No paths found at ' + absTsconfigPath);
     return {
