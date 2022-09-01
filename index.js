@@ -13,12 +13,16 @@ module.exports = (relativeTsconfigPath = "./tsconfig.json") => {
   tsconfigData = stripJsonComments(tsconfigData);
   const { compilerOptions } = JSON.parse(tsconfigData);
 
-  const pathKeys = Object.keys(compilerOptions.paths);
+  const pathKeys = Object.keys(compilerOptions.paths | {});
+  if(pathKeys.length === 0){
+    console.warn('esbuild-ts-paths - No paths found at ' + absTsconfigPath);
+  }
   const re = new RegExp(`^(${pathKeys.join("|")})`);
   return {
     name: "esbuild-ts-paths",
     setup(build) {
       build.onResolve({ filter: re }, (args) => {
+        console.log(args);
         const pathKey = pathKeys.find((pkey) => new RegExp(`^${pkey}`).test(args.path));
         const [pathDir] = pathKey.split("*");
         let file = args.path.replace(pathDir, "");
