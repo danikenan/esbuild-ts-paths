@@ -18,6 +18,7 @@ module.exports = (relativeTsconfigPath = "./tsconfig.json") => {
     console.warn('esbuild-ts-paths - No paths found at ' + absTsconfigPath);
     return {
       name: "esbuild-ts-paths",
+      setup(build) {}
     }
   }
   const re = new RegExp(`^(${pathKeys.join("|")})`);
